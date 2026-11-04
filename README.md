@@ -31,7 +31,7 @@ Os cadastros, registros, atributos e vínculos analíticos são locais. A interf
 | `README.md` | Uso, regras, decisões provisórias e integração. |
 | `dados/` | Arquivos municipais preexistentes, preservados sem alteração. |
 
-Os documentos `Especificacao_Funcional_BI_Rio_Doce_v1.md`, `Modelo_de_Dados_BI_Rio_Doce_v1.md`, `01_modelo_bi_rio_doce.sql` e `02_consultas_interface.sql` não foram encontrados no projeto. O briefing da nova versão foi usado como referência de comportamento.
+A implementação foi feita com base no briefing da nova versão. Os documentos [Especificação funcional](Especificacao_Funcional_BI_Rio_Doce_v1.md) e [Modelo de dados e diagramas](Modelo_de_Dados_BI_Rio_Doce_v1.md#4-diagramas-de-relacionamentos), adicionados posteriormente ao projeto, estão agora versionados como referências. Os arquivos `01_modelo_bi_rio_doce.sql` e `02_consultas_interface.sql` não estão presentes no repositório.
 
 ## Seleção e consulta
 
