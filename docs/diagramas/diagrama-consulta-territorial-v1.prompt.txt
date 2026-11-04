@@ -1,0 +1,38 @@
+Gerado com a ferramenta nativa image_gen (sem CLI).
+Diagrama de apresentação inspirado no modelo fornecido pelo usuário.
+id_registro corresponde ao identificador do objeto (id_var no esboço).
+sg_variavel identifica o tipo, por exemplo PTR.
+Pressupostos: id_recorte único entre tipos; vínculos únicos por recorte, sigla e registro; cobertura completa na edição consultada.
+
+Create one polished landscape 16:9 infographic IMAGE in Portuguese for a meeting about a territorial BI prototype. It is a simplified logical data model, inspired by a sketch with green circles for selected territories and variables, and a blue circle for a preprocessed spatial relation table. White background, excellent legible typography, flat technical illustration, clean arrows, forest green / fresh green / blue accents. Generous spacing. No logos.
+Title: "BI territorial — da seleção ao resultado"
+Subtitle: "A interface escolhe os filtros. Os cruzamentos já estão prontos."
+Keep the image simple, suitable for a presentation, not a dense physical database schema.
+
+Three main colored circular zones:
+LEFT UPPER, dark green zone "RECORTES" with a white database card named "recortes", rows "id_recorte", "tipo_recorte", "nm_recorte", "geom". Small source label outside: "Municípios • ATIs • Assentamentos • Buffer • TIs • Quilombolas". A connected interface chip: "Mapa ou busca → recorte 10".
+LEFT LOWER, fresh green zone "VARIÁVEIS" with white database card named "variaveis", rows "sg_variavel", "id_registro", "geom". Small source label: "PTR • CAR • Assentamentos". Connected interface chip: "Seletor → PTR". Small explanatory label "Sigla = tipo; ID = objeto". A tiny note "Atributos completos nas tabelas de origem".
+Green selections lead via a small pill "API · aplicar filtros" to the blue zone. These are parameter/filter arrows, not spatial computation arrows.
+
+CENTER RIGHT, large BLUE circle "CRUZAMENTOS PRÉ-PROCESSADOS" containing white table "consulta". This stored table has exactly 3 columns "id_recorte", "sg_variavel", "id_registro" and exactly FOUR rows:
+10 | PTR | 1
+10 | PTR | 2
+10 | PTR | 3
+10 | PTR | 4
+Caption "Uma linha por vínculo espacial único".
+A discreet dashed preprocessing arrow from the two green dataset cards to the blue zone is labelled "Preparado antes da navegação".
+Solid filter arrows from the interface/API pass to the blue zone labelled "recorte 10 + PTR".
+
+RIGHT, prominent output "QUANTOS?" with a giant "4" and "registros de PTR".
+Below two smaller output cards: "QUAIS? → IDs 1, 2, 3 e 4 no mapa" and "ATRIBUTOS → registros completos + XLSX". Outputs all use the same filtered IDs.
+
+BOTTOM clean horizontal SQL card, exact text:
+SELECT COUNT(*) AS quantidade
+FROM consulta
+WHERE id_recorte = 10
+  AND sg_variavel = 'PTR';
+To its right a badge "Resultado: 4".
+Bottom small but legible note: "Vínculos sem duplicação. Com vários recortes, contar IDs distintos por variável."
+Footer: "Modelo lógico simplificado • exemplo fictício • consulta com cobertura completa"
+
+Critical conceptual accuracy: PTR is a text variable category, IDs 1..4 are individual records. The blue table is stored individual links, not aggregated totals. COUNT(*) is correct here only because each (id_recorte,sg_variavel,id_registro) pair is unique. Preserve this explanation. Do not invent meanings for PTR or ATI. Do not add versioning/support tables. Make all labels large and readable, aligned, no overlapping arrows, clear flow.

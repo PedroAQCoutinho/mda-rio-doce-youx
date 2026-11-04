@@ -1,7 +1,7 @@
 /*
  * BI territorial — catálogo e fixtures determinísticos, sem acesso a rede.
  * Todos os nomes, limites, registros e o grupo de 49 abaixo são simulados.
- * Os arquivos fornecidos em dados/ são preservados, mas não são consumidos.
+ * Os dados brutos locais são preservados fora da versão compartilhada; não são consumidos.
  * GeoJSON em WGS84: longitude antes de latitude.
  */
 (function (global) {
