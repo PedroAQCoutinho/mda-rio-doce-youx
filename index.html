@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rio Doce — Consulta Territorial</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" onerror="window.estiloMapaFalhou=true">
+</head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5"/><path d="m15 15 5 5"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/><circle cx="12" cy="12" r="4"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+    <symbol id="i-draw" viewBox="0 0 24 24"><path d="m5 5 14 2-3 12-12-4Z"/><path d="M3 3h4v4H3Zm14 2h4v4h-4Zm-3 12h4v4h-4ZM2 13h4v4H2Z" fill="currentColor"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m3 8 9-5 9 5-9 5Zm0 5 9 5 9-5M3 18l9 5 9-5"/></symbol>
+    <symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14h18M9 9v11"/></symbol>
+  </svg>
+  <header>
+    <div class="brand-icon" aria-hidden="true"><svg width="29" height="29" viewBox="0 0 30 30" fill="none"><path d="M18 3c-13 7 8 9-3 16-4 3-7 4-6 8M24 3c-13 7 8 9-3 16-4 3-7 4-6 8" stroke="#c7dfbf" stroke-width="2"/><path d="m5 9 4-5 3 3M22 23l3-4 3 4" stroke="#86ad8d" stroke-width="1.5"/></svg></div>
+    <div><h1>Rio Doce <span>/</span> Consulta Territorial</h1><p class="brand-sub">MDA / ANATER · Um território. Diferentes perspectivas.</p></div>
+    <div class="header-right"><span class="badge">Protótipo — dados simulados</span><button class="text-button" id="help-toggle" aria-expanded="false" aria-controls="help"><svg class="icon"><use href="#i-info"/></svg>Sobre a plataforma</button></div>
+  </header>
+  <aside class="help floating-panel" id="help" hidden>
+    <button class="close" id="help-close" aria-label="Fechar informações">×</button><h2>Explore o território</h2>
+    <p>Escolha um tipo, adicione recortes e compare variáveis. A consulta considera a união dos recortes selecionados: cada registro aparece uma única vez por variável.</p>
+    <p>Municípios, composição dos 49, buffer e demais limites são esquemáticos e fictícios. PTRs usam pontos e contagem por registro, provisoriamente, até a definição da fonte.</p>
+    <p>Abra <code>index.html</code> diretamente, mantendo as pastas <code>css/</code> e <code>js/</code>. Internet é necessária para Leaflet 1.9.4, SheetJS 0.18.5 e mapa-base Esri. Busca, seleção e tabelas funcionam mesmo sem mapa.</p>
+    <p>“Dados indisponíveis” indica cruzamentos incompletos na edição selecionada; não significa zero. Veja o README para fixtures e integração.</p>
+  </aside>
+  <main class="workspace" id="workspace">
+    <aside class="sidebar" aria-label="Controles da consulta">
+      <div class="eyebrow">Explore o território</div>
+      <section class="recorte-controls">
+        <div class="step-heading"><span class="step-number">1</span><h2>Qual recorte você quer ver?</h2></div>
+        <p class="description">Combine territórios de diferentes tipos.<br>Os resultados consideram a união da seleção.</p>
+        <label for="territory-type">Tipo de recorte</label>
+        <select id="territory-type"><option value="">Escolha um tipo de recorte</option></select>
+        <div class="search-wrap"><label for="search">Buscar território</label><div class="search-input"><svg class="icon"><use href="#i-search"/></svg><input id="search" disabled placeholder="Nome ou identificador" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="suggestions"></div><div id="suggestions" class="suggestions" role="listbox" hidden></div></div>
+        <button class="outline full" id="draw-start" disabled><svg class="icon"><use href="#i-draw"/></svg>Desenhar para selecionar</button>
+        <div id="agreement-block" hidden><button class="agreement" id="agreement">+ Adicionar os 49 municípios do novo acordo</button><p class="tiny">Composição fictícia para validação do fluxo.</p></div>
+      </section>
+      <section class="selection-section">
+        <div class="section-line"><h3>Recortes selecionados <span class="number-tag" id="selected-count">0</span></h3><button class="link-button" id="clear">Limpar recortes</button></div>
+        <p class="empty-selection" id="selection-empty">Escolha um tipo e adicione recortes pela busca, pelo mapa ou por desenho.</p>
+        <ul class="selected-list" id="selected-list" aria-label="Recortes selecionados"></ul>
+      </section>
+      <section class="stage">
+        <div class="step-heading"><span class="step-number">2</span><h2>O que você quer avaliar?</h2></div><p class="description">Selecione uma ou mais variáveis.</p>
+        <div id="variables" class="variables" role="group" aria-label="Variáveis da consulta"></div>
+      </section>
+      <div class="sidebar-foot"><svg class="icon"><use href="#i-info"/></svg><span>Selecionar um recorte inclui sua geometria inteira. O desenho serve apenas para encontrar recortes.</span></div>
+    </aside>
+    <section class="map-area" aria-label="Mapa territorial">
+      <div id="map"></div>
+      <div class="map-top"><div class="map-label"><span class="eyebrow">Minas Gerais · Espírito Santo</span><strong>Região do Rio Doce</strong><small id="map-layer-title">Escolha um tipo para exibir os recortes</small></div><div class="map-actions"><button class="map-button" id="frame" disabled title="Enquadrar todos os recortes selecionados"><svg class="icon"><use href="#i-target"/></svg><span>Enquadrar seleção</span></button><button class="map-button" id="acervo-toggle" aria-expanded="false" aria-controls="acervo"><svg class="icon"><use href="#i-layers"/></svg><span>Acervo</span></button></div></div>
+      <aside class="acervo floating-panel" id="acervo" hidden><div class="section-line"><h3>Camadas do acervo</h3><button class="close" id="acervo-close" aria-label="Fechar acervo">×</button></div><p class="description">Camadas de referência. Não modificam a consulta.</p><div id="acervo-items"></div></aside>
+      <div class="draw-tools" id="draw-tools" hidden><div><strong>Desenhe sobre o mapa</strong><small id="draw-instruction">Clique para adicionar vértices. São necessários pelo menos 3.</small></div><div class="draw-buttons"><button id="draw-undo" class="outline">Desfazer</button><button id="draw-finish" class="primary">Concluir</button><button id="draw-cancel" class="link-button">Cancelar</button></div></div>
+      <div class="error-stack" id="errors" role="status"></div>
+      <div class="map-bottom"><div id="map-hint" class="map-hint">Escolha um tipo de recorte para começar.</div><div id="legend" class="legend"></div></div>
+    </section>
+    <aside class="results-panel" aria-label="Resultados por variável">
+      <div class="section-line"><h2>Resultados</h2><span class="subtle-tag">Por variável</span></div>
+      <label for="edition" class="edition-label">Edição dos dados</label><select id="edition"></select>
+      <p class="result-summary" id="result-summary">Adicione recortes para iniciar a consulta.</p>
+      <div id="results" aria-live="polite"></div>
+      <div class="result-foot">O zoom e as camadas do acervo não alteram os resultados.</div>
+    </aside>
+    <section id="table-panel" class="table-panel" aria-label="Atributos dos registros" hidden>
+      <div class="table-top"><div><span class="eyebrow">Tabela de atributos</span><h2 id="table-title"></h2></div><div class="table-actions"><button id="table-export" class="outline"><svg class="icon"><use href="#i-download"/></svg><span>Baixar tabela (.xlsx)</span></button><button class="close" id="table-close" aria-label="Fechar tabela">×</button></div></div>
+      <div class="table-scroll" id="table-scroll"><table id="metadata-table"><thead></thead><tbody></tbody></table><p id="table-empty" hidden></p></div>
+      <div class="pagination"><span id="table-caption"></span><div><label for="page-size">Por página</label><select id="page-size"><option>10</option><option>25</option><option>50</option></select><button class="outline" id="page-prev" aria-label="Página anterior">‹</button><span id="page-label"></span><button class="outline" id="page-next" aria-label="Próxima página">›</button></div></div>
+    </section>
+  </main>
+  <div class="toast" id="toast" role="status" hidden></div>
+  <footer><span><i></i>BI territorial · MDA / ANATER — Rio Doce</span><span>Dados e limites esquemáticos · Não utilizar para fins oficiais</span></footer>
+  <noscript>Ative o JavaScript no navegador para utilizar o protótipo.</noscript>
+  <script src="js/data.js" onerror="document.getElementById('errors').textContent='Não foi possível carregar js/data.js. Mantenha as pastas do protótipo junto ao HTML.'"></script>
+  <script src="js/app.js" onerror="document.getElementById('errors').textContent='Não foi possível carregar js/app.js. Mantenha as pastas do protótipo junto ao HTML.'"></script>
+</body>
+</html>
