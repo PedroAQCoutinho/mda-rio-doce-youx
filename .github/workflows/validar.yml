@@ -12,12 +12,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Regras, exemplos e integridade dos contratos
-        run: node tests/run-tests.cjs
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.13'
-      - name: Instalar validador de contrato
-        run: python -m pip install openapi-spec-validator==0.9.0
-      - name: Validar OpenAPI e exemplos HTTP
-        run: python tests/validar_openapi.py
+      - name: Dados, exemplos e referências da documentação
+        run: node prototipo/tests/run-tests.cjs

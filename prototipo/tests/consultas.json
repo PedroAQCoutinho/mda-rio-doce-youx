@@ -1,11 +1,10 @@
 {
-  "descricao": "Casos de aceite do adaptador local. entrada usa campos do contrato; esperado descreve invariantes de teste, não um envelope HTTP. IDs e dados são fictícios.",
+  "descricao": "Casos de aceite do adaptador local, com dados e identificadores fictícios. As entradas representam seleções da interface e os resultados esperados verificam as regras da consulta.",
   "casos": [
     {
       "nome": "União com CAR repetido",
       "entrada": {
         "edicao_id": "ED_2026_11",
-        "requisicao_id": "exemplo-1",
         "recorte_ids": [
           "MUN_001",
           "MUN_002"
@@ -31,7 +30,6 @@
       "nome": "Zero após processamento completo",
       "entrada": {
         "edicao_id": "ED_2026_11",
-        "requisicao_id": "exemplo-2",
         "recorte_ids": [
           "MUN_200"
         ],
@@ -63,7 +61,6 @@
       "nome": "Cobertura ausente impede total parcial",
       "entrada": {
         "edicao_id": "ED_2026_11",
-        "requisicao_id": "exemplo-3",
         "recorte_ids": [
           "MUN_001",
           "TI_002"
@@ -84,7 +81,6 @@
       "nome": "Assentamento nos dois papéis",
       "entrada": {
         "edicao_id": "ED_2026_11",
-        "requisicao_id": "exemplo-4",
         "recorte_ids": [
           "AST_001"
         ],
@@ -106,7 +102,6 @@
       "nome": "Edição anterior em reprocessamento",
       "entrada": {
         "edicao_id": "ED_2026_09",
-        "requisicao_id": "exemplo-5",
         "recorte_ids": [
           "ATI_002"
         ],
@@ -126,7 +121,6 @@
       "nome": "Múltiplas variáveis, conjuntos independentes",
       "entrada": {
         "edicao_id": "ED_2026_11",
-        "requisicao_id": "exemplo-6",
         "recorte_ids": [
           "AST_001"
         ],
